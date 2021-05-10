@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div><label>Nome:</label><input id="nome" type="text"></div>
+    <div><label>Sobrenome:</label><input id="sobrenome" type="text"></div>
+    <div><label>Telefone:</label><input id="telefone" type="text"></div>
+    <div><label>RA:</label><input id="ra" type="text"></div>
+    <div>
+        <button onclick="cadastrar()">Cadastrar</button>
+        <button>Limpar</button>
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <td>Nome</td>
+                <td>Sobrenome</td>
+                <td>Telefone</td>
+                <td>RA</td>
+                <td>Opções</td>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+        function cadastrar() {
+            var nome = document.getElementById('nome').value;
+            var sobrenome = document.getElementById('sobrenome').value;
+            var telefone = document.getElementById('telefone').value;
+            var ra = document.getElementById('ra').value;
+
+            var aluno = {
+                nome, sobrenome, telefone, ra
+            }
+        }
+
+        function carregaAlunos() {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'http://localhost:61155/api/Aluno', true);
+
+            xhr.onload = function () {
+                var alunos = JSON.parse(this.responseText);
+
+                for (var indice in alunos) {
+                    adicionaLinha(alunos[indice]);
+                }
+            }
+
+            xhr.send();
+        }
+
+        function editarAluno(id) {
+            console.log(id);
+        }
+
+        function adicionaLinha(aluno) {
+            var tbody = document.querySelector("table tbody");
+
+            var trow = `
+                        <tr>
+                            <td>${aluno.Nome}</td>
+                            <td>${aluno.Sobrenome}</td>
+                            <td>${aluno.Telefone}</td>
+                            <td>${aluno.Ra}</td>
+                            <td><button onclick='editarAluno(${aluno.Id})'>Editar</button></td>
+                        </tr>
+                       `;
+            
+            tbody.innerHTML += trow;
+        }
+
+        carregaAlunos();
+    </script>
+</body>
+</html>
